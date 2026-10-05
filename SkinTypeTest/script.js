@@ -256,6 +256,8 @@ document.addEventListener("DOMContentLoaded", function () {
         <p style="font-size: 0.9rem; opacity: 0.9;">Base safe time for your skin type: ${baseSafeTime} minutes (adjusted for current UV conditions)</p>
       </div>
 
+      ${category === "Moderate" ? '<img src="imgs/sunscreen.png" alt="Sunscreen" style="display: block; max-width: 100%; height: auto; margin: 0 auto 20px;">' : ""}
+
       <button id="reset-btn" type="button" style="margin-top: 20px; background-color: #f4cf16ff; color: white;">Reset Test</button>
     `;
 
