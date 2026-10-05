@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UV Index Skin Type Quiz</title>
+
+  <link href="https://cdn.fonts.net/kit/7b6b1e00-8b68-11ec-9ce3-0220834439f4/7b6b1e00-8b68-11ec-9ce3-0220834439f4.css"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://use.typekit.net/aaf3zro.css">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+  <div id="page">
+    <main id="content">
+      <div class="grid">
+        <div id="uv-index">
+       
+        </div>
+        <!--store the safe exposure times for each skin type-->
+        <div id="safe-exposure-time">
+          <p id="st1"></p>
+          <p id="st2"></p>
+          <p id="st3"></p>
+          <p id="st4"></p>
+          <p id="st5"></p>
+          <p id="st6"></p>
+        </div>
+      </div>
+        <!--where the skin type questions will be displayed-->
+      <div id="questions-container">
+        <div id="question-intro">
+          <p>UV rays don't affect everyone the same, skin type plays a significant role in determining safe exposure
+            times.</p>
+            <h2 class="quiz-instructions" style="text-align: left;">Complete the quiz to find out your skin type and safe sun exposure times.</h2>
+          <button class="btn-align" id="start-btn" type="button">Start Quiz</button>
+        </div>
+
+        <div id="question-display" style="display: none;">
+          <div id="progress-bar">
+            <div id="progress-text" style="font-size: 1rem; text-align: center; font-weight: bold; margin: 0;"></div>
+            <div>
+              <div id="progress-fill" style="background-color: #ffd014; height: 100%; width: 0%; transition: width 0.3s ease;"></div>
+            </div>
+          </div>
+
+          <div id="question-content" style="margin: 2rem 0; min-height: 80px;">
+            <!-- Question will be inserted here -->
+          </div>
+
+          <div id="button-group" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <button id="prev-btn" type="button" style="display: none;">← Previous</button>
+            <button id="next-btn" type="button">Next →</button>
+            <button id="submit-btn" type="button" style="display: none;">Confirm Answer</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="results"></div>
+    </main>
+  </div>
+
+  <footer style="display: flex; justify-items: center;">
+    The Fitzpatrick scale is the most widely used assessment to categorize skin types by dermatologists. However, it has little consideration for darker skin tones, which makes diagnosing skin conditions more difficult and often leads to under-treatment. For comprehensive information about skin types please consult a dermatologist.
+  </footer>
+</body>
+
+</html>

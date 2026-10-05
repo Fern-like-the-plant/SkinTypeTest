@@ -1,0 +1,210 @@
+/* Fonts are loaded via Monotype. See the head section in index.html for details.  */
+body{
+    text-align: center;
+    margin: 0;
+    font-family: hatch, serif;
+            /* Path to your image */
+            background-image: url('imgs/SunTransparent.png'); 
+            /* Prevents the image from repeating/tiling */
+            background-repeat: no-repeat;
+            /* Centers the image perfectly */
+            background-position: center; 
+            /* Scales the image to completely cover the screen without stretching */
+            background-size: cover; 
+            /* Keeps the background fixed in place while scrolling */
+            background-attachment: fixed;
+            /* Fallback color if the image fails to load */
+            background-color: #f8c52c; 
+            /* Removes default browser margins */
+            margin: 0; 
+            min-height: 100vh;
+}
+/* Page layout is vertical and includes header, main, and footer. This is handled via a Flexbox column. */
+#page {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Menu items and Main content both share a similar flexbox layout strategy.  */
+#menu, #content{  
+  display: flex; 
+  flex-direction: row;
+  flex-wrap: wrap; 
+  justify-content: center; 
+}
+
+/* Each menuitem has a rounded corners and pointer cursor applied  */
+#menu a{ 
+  padding: 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  color: #666;
+} 
+
+/* setup a simple hover effect on the menu.*/
+#menu a:hover{ 
+  color: #000;
+  background: #eee;  
+}
+
+/* JavaScript dynamically assigns the "selected" class to a clicked menuitem */
+ #menu .selected{
+   color: white;
+   background: maroon;
+ }
+ 
+
+nav{
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.grid {
+  display: grid;
+  grid-template-rows: auto auto;
+  justify-content: left;
+  column-gap: 1rem;
+}
+.grid p {
+  text-align: left;
+  align-items: left;
+  padding-left: 1rem;
+}
+button {
+  padding: 1rem 1rem;
+  font-size: 2rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: #ffd000;
+  color: rgb(0, 0, 0);
+  font-family: 'hatch', serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  letter-spacing: 0.12em;
+  margin: 2rem auto 1rem;
+  color: #f1d26b;
+  text-shadow: 
+    3px 3px 0 #d77b5a,
+    6px 6px 0 rgba(0,0,0,0.1),
+    -2px -2px 0 rgba(255,255,255,0.3);
+  font-weight: 900;
+  font-style: italic;
+  transform: skew(-5deg);
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,0.15));
+  align-items: flex-start;
+}
+
+#questions-container h2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  margin: 1rem 0;
+  font-family: "hatch", serif;
+  font-weight: 200;
+  font-style: normal;
+  font-size: 1em;
+}
+#questions-container p {
+  font-family: "hatch", serif;
+  font-weight: 200;
+  font-style: normal;
+  font-size: 1em;
+  align-items: flex-start;
+}
+
+#questions-container select {
+  width: 50%;
+  max-width: 520px;
+  margin-top: 0.35rem;
+}
+
+#questions-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  width: 100%;
+}
+
+#question-intro,
+#question-display {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+  text-align: left;
+  align-items: flex-start;
+}
+
+#question-content {
+  width: 100%;
+  max-width: 700px;
+  text-align: left;
+  font-size: 1.5em;
+}
+#question-content 
+
+#question-content p {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  font-size: 6em;
+  font-family: "hatch", serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+#question-content label {
+  display: block !important;
+  text-align: left !important;
+  margin: 1rem 0 !important;
+  max-width: 100%;
+  font-family: "hatch", serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+#button-group {
+  margin-top: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+
+#progress-bar {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 1rem;
+}
+
+
+#question-intro p {
+  font-size: 2rem;
+  text-align: left;
+}
+.btn-align {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer {
+  padding: 2rem;
+  font-family: 'TwentiethCenturyLightItalic';
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  margin: 1rem auto;
+  max-width: 700px;
+  align-items: flex-start;
+}
