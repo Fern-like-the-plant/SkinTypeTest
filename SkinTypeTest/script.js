@@ -111,23 +111,22 @@ var skinCharacteristics = {
 let selectedSkinType = null;
 
 document.addEventListener("DOMContentLoaded", function () {
-  const nextBtn = document.getElementById("next-btn");
-  const prevBtn = document.getElementById("prev-btn");
+  const startBtn = document.getElementById("start-btn");
   const submitBtn = document.getElementById("submit-btn");
   const questionIntro = document.getElementById("question-intro");
-  const questionDisplay = document.getElementById("question-display");
   const questionContent = document.getElementById("question-content");
-  //const progressText = document.getElementById("progress-text");
-//  const progressFill = document.getElementById("progress-fill");
   const resultsDiv = document.getElementById("results");
-  const questionsContainer = document.getElementById("questions-container");
+  const question = {
+    label: "Choose the description that best matches your skin:",
+    options: Object.entries(skinCharacteristics).map(([value, characteristics], index) => ({
+      value,
+      text: `Skin Type ${index + 1}`,
+      details: `${characteristics.description}. ${characteristics.details}`
+    }))
+  };
 
-  //displays the single skin type question with all options in a grid//
   function displaySkinTypeQuestion() {
-    progressText.textContent = ""; 
-    progressFill.style.width = "100%";
-
-    let optionsHTML = question.options.map(option => `
+    const optionsHTML = question.options.map(option => `
       <div style=" background-color: #f9f9f9; border-radius: 8px; padding: 1rem; cursor: pointer; text-align: left; display: flex; flex-direction: column; justify-content: center;" class="skin-type-option" data-value="${option.value}">
         <label style="cursor: pointer; display: block; font-size: 1rem; font-family: arial; font-weight: bold; margin: 0;">
           <input type="radio" name="skin-type-selection" value="${option.value}" style="margin: 0 1rem 0.5rem 1rem;">
@@ -141,10 +140,11 @@ document.addEventListener("DOMContentLoaded", function () {
       <p style="font-size: 1.3rem; margin-top:2em; margin-bottom: 1.5rem;">UV rays don't affect everyone the same, skin type plays a significant role in determining safe exposure times.</p>
       <p style="font-size: 1rem; font-family: arial; font-weight: bold; margin-top: 0; margin-bottom: 1.5rem;">${question.label}</p>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; width: 100%; margin: 0 auto;">
-        ${optionsHTML} 
+        ${optionsHTML}
       </div>
     `;
 
+    questionContent.hidden = false;
     submitBtn.style.display = 'block';
 
     // Add change listeners to radio buttons
@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const optionDivs = document.querySelectorAll(".skin-type-option");
     optionDivs.forEach(div => {
       div.addEventListener("click", function () {
-        const radio = this.querySelector(`input[type="radio"]`);
+        const radio = this.querySelector('input[type="radio"]');
         radio.checked = true;
         selectedSkinType = radio.value;
       });
@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateResults() {
     if (!selectedSkinType) {
       alert("Please select your skin type before submitting.");
-      return;
+      return false;
     }
 
     const skinType = selectedSkinType;
@@ -222,27 +222,29 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Scroll results to top of page
     resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return true;
   }
 
   function resetTest() {
     selectedSkinType = null;
-    questionIntro.style.display = "none"; //hide intro
-    questionDisplay.style.display = "block"; //show quiz
-    resultsDiv.innerHTML = ""; //clear results
-    displaySkinTypeQuestion(); //show question again
-    
-    // Scroll quiz back to top
-    questionDisplay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    resultsDiv.innerHTML = "";
+    questionContent.hidden = true;
+    submitBtn.style.display = "none";
+    questionIntro.style.display = "flex";
+    questionIntro.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // Display question immediately on page load
-  questionIntro.style.display = "none"; //hide intro
-  questionDisplay.style.display = "block"; //show quiz
-  displaySkinTypeQuestion(); //show skin type question
+  questionContent.hidden = true;
+  startBtn.addEventListener("click", function () {
+    questionIntro.style.display = "none";
+    displaySkinTypeQuestion();
+  });
 
-  // Submit button - calculate and show results
   submitBtn.addEventListener("click", function () {
-    questionDisplay.style.display = "none"; //hide quiz
-    updateResults(); //show results
+    if (updateResults()) {
+      questionContent.hidden = true;
+      submitBtn.style.display = "none";
+    }
   });
 });
+
