@@ -32,12 +32,20 @@ fetch(`https://api.openuv.io/api/v1/uv?lat=${lat}&lng=${lng}&alt=${alt}&dt=${dt}
 
     if (uvIndex !== undefined) {
       currentUVIndex = uvIndex;
-      const uvValueElement = document.getElementById("uv-value");
+      const peakUVIndex = data?.result?.uv_max;
+      const peakUVTime = data?.result?.uv_max_time;
+      const peakTime = peakUVTime ? new Date(peakUVTime) : null;
+      const peakTimeLabel = peakTime && Number.isFinite(peakTime.getTime())
+        ? peakTime.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })
+        : "Unavailable";
+      const uvValueElement = document.getElementById("uv-index");
       if (uvValueElement) {
         const { bgColor, category } = getUVCategory(uvIndex);
         uvValueElement.innerHTML = `
           <div style="background-color: ${bgColor}; padding: 15px; align border-radius: 8px; text-align: center; width:100%; font-weight: bold; color: white;">
-            UV Index: ${uvIndex} (${category})
+            <p>UV Index: ${uvIndex} (${category})</p>
+            <p>Peak UV Index: ${peakUVIndex ?? "Unavailable"}</p>
+            <p>Peak expected: ${peakTimeLabel}</p>
           </div>
         `;
       }
@@ -100,54 +108,6 @@ var skinCharacteristics = {
   }
 };
 
-//assigns how long each skin type can be under the sun//
-var skinTypes = {
-  type1: { min: 0, max: 7 },
-  type2: { min: 8, max: 16 },
-  type3: { min: 17, max: 24 },
-  type4: { min: 25, max: 30 },
-  type5: { min: 31, max: 35 },
-  type6: { min: 36, max: 42 }
-};
-
-// Single question asking for skin type
-const question = {
-  id: "skin-type-selection",
-  label: "What is your skin type?",
-  options: [
-    { 
-      value: "type1", 
-      text: "Type 1: Very sensitive to sun light",
-      details: "Pale white skin, blue/green eyes, blond/red hair. Always burns, never tans."
-    },
-    { 
-      value: "type2", 
-      text: "Type 2: Sensitive to sun light",
-      details: "Fair skin, blue eyes. Usually burns, tans minimally."
-    },
-    { 
-      value: "type3", 
-      text: "Type 3: Moderate sensitivity to sun light",
-      details: "Darker white skin. Sometimes burns, tans gradually."
-    },
-    { 
-      value: "type4", 
-      text: "Type 4: Low sensitivity to sun light",
-      details: "Olive skin, rarely burns. Tans easily and well."
-    },
-    { 
-      value: "type5", 
-      text: "Type 5: Very low sensitivity to sun light",
-      details: "Brown skin, very rarely burns. Tans very easily."
-    },
-    { 
-      value: "type6", 
-      text: "Type 6: Minimal sensitivity to sun light",
-      details: "Dark skin, never burns. Always deeply pigmented."
-    }
-  ]
-};
-
 let selectedSkinType = null;
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -157,37 +117,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const questionIntro = document.getElementById("question-intro");
   const questionDisplay = document.getElementById("question-display");
   const questionContent = document.getElementById("question-content");
-  const progressText = document.getElementById("progress-text");
-  const progressFill = document.getElementById("progress-fill");
+  //const progressText = document.getElementById("progress-text");
+//  const progressFill = document.getElementById("progress-fill");
   const resultsDiv = document.getElementById("results");
   const questionsContainer = document.getElementById("questions-container");
 
   //displays the single skin type question with all options in a grid//
   function displaySkinTypeQuestion() {
-    progressText.textContent = "";
+    progressText.textContent = ""; 
     progressFill.style.width = "100%";
 
     let optionsHTML = question.options.map(option => `
-      <div style=" background-color: #f9f9f9; border-radius: 8px; padding: 2rem; cursor: pointer; text-align: left; display: flex; flex-direction: column; justify-content: center;" class="skin-type-option" data-value="${option.value}">
-        <label style="cursor: pointer; display: block; margin: 0;">
-          <input type="radio" name="skin-type-selection" value="${option.value}" style="margin-right: 0.5rem;">
+      <div style=" background-color: #f9f9f9; border-radius: 8px; padding: 1rem; cursor: pointer; text-align: left; display: flex; flex-direction: column; justify-content: center;" class="skin-type-option" data-value="${option.value}">
+        <label style="cursor: pointer; display: block; font-size: 1rem; font-family: arial; font-weight: bold; margin: 0;">
+          <input type="radio" name="skin-type-selection" value="${option.value}" style="margin: 0 1rem 0.5rem 1rem;">
           ${option.text}
         </label>
-        <p style="margin: 0.5rem 0 0 1.8rem; font-size: 1rem; color: #666;">${option.details}</p>
+        <p style="margin: 0.5rem 1rem 0.5rem 1rem; font-size: 1rem; font-family: arial; color: #666;">${option.details}</p>
       </div>
     `).join('');
 
     questionContent.innerHTML = `
-      <p style="font-size: 2rem; margin-top:2em; margin-bottom: 1.5rem;">UV rays don't affect everyone the same, skin type plays a significant role in determining safe exposure times.</p>
-      <p style="font-size: 1.2rem; margin-top: 0; margin-bottom: 1.5rem;">${question.label}</p>
+      <p style="font-size: 1.3rem; margin-top:2em; margin-bottom: 1.5rem;">UV rays don't affect everyone the same, skin type plays a significant role in determining safe exposure times.</p>
+      <p style="font-size: 1rem; font-family: arial; font-weight: bold; margin-top: 0; margin-bottom: 1.5rem;">${question.label}</p>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; width: 100%; margin: 0 auto;">
-        ${optionsHTML}
+        ${optionsHTML} 
       </div>
     `;
 
-    // Hide navigation buttons for single question
-    prevBtn.style.display = 'none';
-    nextBtn.style.display = 'none';
     submitBtn.style.display = 'block';
 
     // Add change listeners to radio buttons
@@ -258,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       ${category === "Moderate" ? '<img src="imgs/sunscreen.png" alt="Sunscreen" style="display: block; max-width: 100%; height: auto; margin: 0 auto 20px;">' : ""}
 
-      <button id="reset-btn" type="button" style="margin-top: 20px; background-color: #f4cf16ff; color: white;">Reset Test</button>
+      <button id="reset-btn" type="button" style="margin-top: 20px; background-color: rgb(255, 170, 0); color: white;">Reset Test</button>
     `;
 
     document.getElementById("reset-btn").addEventListener("click", resetTest);
